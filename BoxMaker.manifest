@@ -1,0 +1,11 @@
+{
+	"autodeskProduct":	"Fusion360",
+	"type":	"script",
+	"author":	"Luke Cyca",
+	"description":	{
+		"":	"Create boxes with notched box-joint panels."
+	},
+	"version":	"0.0.1",
+	"runOnStartup":	false,
+	"supportedOS":	"windows|mac"
+}
