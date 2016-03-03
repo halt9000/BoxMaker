@@ -6,12 +6,12 @@ import os
 import sys
 sys.path.append(os.path.dirname(__file__))
 from BMLib import (
-    getFrontPoints,
-    getBackPoints,
-    getLeftPoints,
-    getRightPoints,
-    getBottomPoints,
-    getTopPoints,
+    genFrontPoints,
+    genBackPoints,
+    genLeftPoints,
+    genRightPoints,
+    genBottomPoints,
+    genTopPoints,
 )
 
 # global set of event handlers to keep them referenced for the duration of the command
@@ -38,7 +38,7 @@ def buildAll(component, w, h, d, thickness):
 
 def buildFront(component, w, h, d, thickness):
     sketch = component.sketches.add(component.xYConstructionPlane)
-    sketchPoints(sketch, getFrontPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genFrontPoints(w, h, d, thickness, 5))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Front"
     moveExt(component, e, 'z', d - thickness)
@@ -46,21 +46,21 @@ def buildFront(component, w, h, d, thickness):
 
 def buildBack(component, w, h, d, thickness):
     sketch = component.sketches.add(component.xYConstructionPlane)
-    sketchPoints(sketch, getBackPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genBackPoints(w, h, d, thickness, 5))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Back"
 
 
 def buildLeft(component, w, h, d, thickness):
     sketch = component.sketches.add(component.yZConstructionPlane)
-    sketchPoints(sketch, getLeftPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genLeftPoints(w, h, d, thickness, 5))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Left"
 
 
 def buildRight(component, w, h, d, thickness):
     sketch = component.sketches.add(component.yZConstructionPlane)
-    sketchPoints(sketch, getRightPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genRightPoints(w, h, d, thickness, 5))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Right"
     moveExt(component, e, 'x', w - thickness)
@@ -68,14 +68,14 @@ def buildRight(component, w, h, d, thickness):
 
 def buildBottom(component, w, h, d, thickness):
     sketch = component.sketches.add(component.xZConstructionPlane)
-    sketchPoints(sketch, getBottomPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genBottomPoints(w, h, d, thickness, 5))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Bottom"
 
 
 def buildTop(component, w, h, d, thickness):
     sketch = component.sketches.add(component.xZConstructionPlane)
-    sketchPoints(sketch, getTopPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genTopPoints(w, h, d, thickness, 5))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Top"
     moveExt(component, e, 'y', h - thickness)
@@ -104,6 +104,7 @@ def moveExt(component, ext, axis, distance):
 
 def sketchPoints(sketch, points):
     lines = sketch.sketchCurves.sketchLines
+    points = list(points)
 
     lastX, lastY = points[-1]
     for (x, y) in points:
@@ -237,7 +238,7 @@ def main():
     try:
         commandId = 'BoxMaker'
         commandName = 'BoxMaker'
-        commandDescription = 'Creates a box with notched box-joint panels.'
+        commandDescription = 'Create boxes with notched box-joint panels.'
         cmdDef = ui.commandDefinitions.itemById(commandId)
         if not cmdDef:
             cmdDef = ui.commandDefinitions.addButtonDefinition(
