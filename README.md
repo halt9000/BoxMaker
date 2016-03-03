@@ -4,6 +4,8 @@ This script is used for creating a box with notched box joints, also known as fi
 
 [![Build Status](https://travis-ci.org/lukecyca/BoxMaker.svg?branch=master)](https://travis-ci.org/lukecyca/BoxMaker)
 
+![Example box](/resources/Box.png?raw=true "Example box")
+
 ## Installation
 
 1. Clone this project directory to your computer
