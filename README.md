@@ -21,4 +21,4 @@ This script is used for creating a box with notched box joints, also known as fi
 ## Acknowledgements
 
 * The original [BoxMaker](http://boxmaker.connectionlab.org/)
-* [Scott Kildall](https://github.com/scottkildall/Fusion360FJBox)
+* Inspiration from [Scott Kildall](https://github.com/scottkildall/Fusion360FJBox)
