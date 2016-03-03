@@ -2,6 +2,8 @@
 
 This script is used for creating a box with notched box joints, also known as finger joints. It was inspired by the very useful [BoxMaker](http://boxmaker.connectionlab.org/) that generates PDF templates for such boxes.
 
+[![Build Status](https://travis-ci.org/lukecyca/BoxMaker.svg?branch=master)](https://travis-ci.org/lukecyca/BoxMaker)
+
 ## Installation
 
 1. Clone this project directory to your computer
