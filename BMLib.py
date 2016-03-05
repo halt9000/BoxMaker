@@ -1,61 +1,63 @@
 from itertools import chain
 
 
-def genFrontPoints(w, h, d, t, n):
+#: Multiple of notch height
+IDEAL_NOTCH_WIDTH = 4
+
+
+def genFrontPoints(w, h, d, t):
     return chain(
-        genHorizontalLinePoints(0, 0, w / n, n, t, 0),
-        genVerticalLinePoints(w - t, 0, h / n, n, t, 0),
-        genHorizontalLinePoints(w, h - t, -w / n, n, t, -t),
-        genVerticalLinePoints(0, h, -h / n, n, t, -t),
+        genHorizontalLinePoints(0, 0, w, t, 0),
+        genVerticalLinePoints(w, 0, h, -t, 0),
+        genHorizontalLinePoints(w, h - t, -w, t, 0),
+        genVerticalLinePoints(0, h, -h, t, -t),
     )
 
 
-def genBackPoints(w, h, d, t, n):
+def genBackPoints(w, h, d, t):
+    return genFrontPoints(w, h, d, t)
+
+
+def genLeftPoints(w, h, d, t):
     return chain(
-        genHorizontalLinePoints(0, 0, w / n, n, t, 0),
-        genVerticalLinePoints(w - t, 0, h / n, n, t, 0),
-        genHorizontalLinePoints(w, h - t, -w / n, n, t, -t),
-        genVerticalLinePoints(0, h, -h / n, n, t, -t),
+        genHorizontalLinePoints(0, 0, -d, t, -t),
+        genVerticalLinePoints(-d + t, 0, h, -t, 0),
+        genHorizontalLinePoints(-d, h - t, d, t, t),
+        genVerticalLinePoints(-t, h, -h, t, -t),
     )
 
 
-def genLeftPoints(w, h, d, t, n):
+def genRightPoints(w, h, d, t):
+    return genLeftPoints(w, h, d, t)
+
+
+def genBottomPoints(w, h, d, t):
     return chain(
-        genHorizontalLinePoints(0, 0, -d / n, n, t, -t),
-        genVerticalLinePoints(-d + t, 0, h / n, n, -t, 0),
-        genHorizontalLinePoints(-d, h - t, d / n, n, t, t),
-        genVerticalLinePoints(-t, h, -h / n, n, t, -t),
+        genHorizontalLinePoints(0, -t, w, t, t),
+        genVerticalLinePoints(w - t, 0, -d, t, -t),
+        genHorizontalLinePoints(w, -d + t, -w, -t, -t),
+        genVerticalLinePoints(t, -d, d, -t, t),
     )
 
 
-def genRightPoints(w, h, d, t, n):
+def genTopPoints(w, h, d, t):
     return chain(
-        genHorizontalLinePoints(0, 0, -d / n, n, t, 0),
-        genVerticalLinePoints(-d, 0, h / n, n, t, 0),
-        genHorizontalLinePoints(-d, h - t, d / n, n, t, 0),
-        genVerticalLinePoints(0, h, -h / n, n, -t, -t),
+        genHorizontalLinePoints(0, 0, w, -t, 0),
+        genVerticalLinePoints(w, 0, -d, -t, 0),
+        genHorizontalLinePoints(w, -d, -w, t, 0),
+        genVerticalLinePoints(0, -d, d, t, 0),
     )
 
 
-def genBottomPoints(w, h, d, t, n):
-    return chain(
-        genHorizontalLinePoints(0, -t, w / n, n, t, t),
-        genVerticalLinePoints(w - t, 0, -d / n, n, t, -t),
-        genHorizontalLinePoints(w, -d + t, -w / n, n, -t, -t),
-        genVerticalLinePoints(t, -d, d / n, n, -t, t),
-    )
+def genHorizontalLinePoints(x, y, length, notchHeight, offset):
+    idealNotch = abs(notchHeight) * IDEAL_NOTCH_WIDTH
+    notchCount = int(abs(length) / idealNotch)
 
+    if notchCount % 2 == 0:
+        notchCount += 1
 
-def genTopPoints(w, h, d, t, n):
-    return chain(
-        genHorizontalLinePoints(0, 0, w / n, n, -t, 0),
-        genVerticalLinePoints(w, 0, -d / n, n, -t, 0),
-        genHorizontalLinePoints(w, -d, -w / n, n, t, 0),
-        genVerticalLinePoints(0, -d, d / n, n, t, 0),
-    )
+    notchWidth = length / notchCount
 
-
-def genHorizontalLinePoints(x, y, notchWidth, notchCount, notchHeight, offset):
     # First point
     yield (x + offset, y)
 
@@ -68,8 +70,8 @@ def genHorizontalLinePoints(x, y, notchWidth, notchCount, notchHeight, offset):
     # Last point is omitted (because it will be the first point of the next side)
 
 
-def genVerticalLinePoints(x, y, notchWidth, notchCount, notchHeight, offset):
+def genVerticalLinePoints(x, y, length, notchHeight, offset):
     # Symmetrical with the horizontal version, but with x & y swapped
-    points = genHorizontalLinePoints(y, x, notchWidth, notchCount, notchHeight, offset)
+    points = genHorizontalLinePoints(y, x, length, notchHeight, offset)
     for y, x in points:
         yield (x, y)

@@ -38,7 +38,7 @@ def buildAll(component, w, h, d, thickness):
 
 def buildFront(component, w, h, d, thickness):
     sketch = component.sketches.add(component.xYConstructionPlane)
-    sketchPoints(sketch, genFrontPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genFrontPoints(w, h, d, thickness))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Front"
     moveExt(component, e, 'z', d - thickness)
@@ -46,21 +46,21 @@ def buildFront(component, w, h, d, thickness):
 
 def buildBack(component, w, h, d, thickness):
     sketch = component.sketches.add(component.xYConstructionPlane)
-    sketchPoints(sketch, genBackPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genBackPoints(w, h, d, thickness))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Back"
 
 
 def buildLeft(component, w, h, d, thickness):
     sketch = component.sketches.add(component.yZConstructionPlane)
-    sketchPoints(sketch, genLeftPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genLeftPoints(w, h, d, thickness))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Left"
 
 
 def buildRight(component, w, h, d, thickness):
     sketch = component.sketches.add(component.yZConstructionPlane)
-    sketchPoints(sketch, genRightPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genRightPoints(w, h, d, thickness))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Right"
     moveExt(component, e, 'x', w - thickness)
@@ -68,14 +68,14 @@ def buildRight(component, w, h, d, thickness):
 
 def buildBottom(component, w, h, d, thickness):
     sketch = component.sketches.add(component.xZConstructionPlane)
-    sketchPoints(sketch, genBottomPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genBottomPoints(w, h, d, thickness))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Bottom"
 
 
 def buildTop(component, w, h, d, thickness):
     sketch = component.sketches.add(component.xZConstructionPlane)
-    sketchPoints(sketch, genTopPoints(w, h, d, thickness, 5))
+    sketchPoints(sketch, genTopPoints(w, h, d, thickness))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Top"
     moveExt(component, e, 'y', h - thickness)

@@ -7,16 +7,16 @@ class TestBoxMaker(unittest.TestCase):
     def test_genHorizontalLinePoints(self):
         expected = [
             (0, 0),
-            (5, 0),
-            (5, 1),
-            (10, 1),
-            (10, 0),
-            (15, 0),
-            (15, 1),
-            (20, 1),
-            (20, 0),
+            (4, 0),
+            (4, 1),
+            (8, 1),
+            (8, 0),
+            (12, 0),
+            (12, 1),
+            (16, 1),
+            (16, 0),
         ]
-        actual = list(BMLib.genHorizontalLinePoints(0, 0, 5, 5, 1, 0))
+        actual = list(BMLib.genHorizontalLinePoints(0, 0, 20, 1, 0))
         self.assertEquals(expected, actual)
 
     def test_genFrontPoints(self):
@@ -24,17 +24,25 @@ class TestBoxMaker(unittest.TestCase):
             (0, 0),
             (4, 0),
             (4, 1),
-            (7, 0),
-            (7, 3),
-            (8, 3),
-            (7, 5),
-            (4, 5),
-            (4, 6),
-            (0, 5),
-            (0, 3),
-            (1, 3),
+            (8, 1),
+            (8, 0),
+            (12, 0),
+            (12, 4),
+            (11, 4),
+            (11, 8),
+            (12, 8),
+            (12, 11),
+            (8, 11),
+            (8, 12),
+            (4, 12),
+            (4, 11),
+            (0, 11),
+            (0, 8),
+            (1, 8),
+            (1, 4),
+            (0, 4),
         ]
-        actual = list(BMLib.genFrontPoints(8, 6, 4, 1, 2))
+        actual = list(BMLib.genFrontPoints(12, 12, 12, 1))
         self.assertEquals(expected, actual)
 
     def test_genBackPoints(self):
@@ -42,53 +50,77 @@ class TestBoxMaker(unittest.TestCase):
             (0, 0),
             (4, 0),
             (4, 1),
-            (7, 0),
-            (7, 3),
-            (8, 3),
-            (7, 5),
-            (4, 5),
-            (4, 6),
-            (0, 5),
-            (0, 3),
-            (1, 3),
+            (8, 1),
+            (8, 0),
+            (12, 0),
+            (12, 4),
+            (11, 4),
+            (11, 8),
+            (12, 8),
+            (12, 11),
+            (8, 11),
+            (8, 12),
+            (4, 12),
+            (4, 11),
+            (0, 11),
+            (0, 8),
+            (1, 8),
+            (1, 4),
+            (0, 4),
         ]
-        actual = list(BMLib.genBackPoints(8, 6, 4, 1, 2))
+        actual = list(BMLib.genBackPoints(12, 12, 12, 1))
         self.assertEquals(expected, actual)
 
     def test_genLeftPoints(self):
         expected = [
             (-1, 0),
-            (-2, 0),
-            (-2, 1),
-            (-3, 0),
-            (-3, 3),
-            (-4, 3),
-            (-3, 5),
-            (-2, 5),
-            (-2, 6),
-            (-1, 5),
-            (-1, 3),
-            (0, 3),
+            (-4, 0),
+            (-4, 1),
+            (-8, 1),
+            (-8, 0),
+            (-11, 0),
+            (-11, 4),
+            (-12, 4),
+            (-12, 8),
+            (-11, 8),
+            (-11, 11),
+            (-8, 11),
+            (-8, 12),
+            (-4, 12),
+            (-4, 11),
+            (-1, 11),
+            (-1, 8),
+            (0, 8),
+            (0, 4),
+            (-1, 4),
         ]
-        actual = list(BMLib.genLeftPoints(8, 6, 4, 1, 2))
+        actual = list(BMLib.genLeftPoints(12, 12, 12, 1))
         self.assertEquals(expected, actual)
 
     def test_genRightPoints(self):
         expected = [
-            (0, 0),
-            (-2, 0),
-            (-2, 1),
+            (-1, 0),
             (-4, 0),
-            (-4, 3),
-            (-3, 3),
-            (-4, 5),
-            (-2, 5),
-            (-2, 6),
-            (0, 5),
-            (0, 3),
-            (-1, 3),
+            (-4, 1),
+            (-8, 1),
+            (-8, 0),
+            (-11, 0),
+            (-11, 4),
+            (-12, 4),
+            (-12, 8),
+            (-11, 8),
+            (-11, 11),
+            (-8, 11),
+            (-8, 12),
+            (-4, 12),
+            (-4, 11),
+            (-1, 11),
+            (-1, 8),
+            (0, 8),
+            (0, 4),
+            (-1, 4),
         ]
-        actual = list(BMLib.genRightPoints(8, 6, 4, 1, 2))
+        actual = list(BMLib.genRightPoints(12, 12, 12, 1))
         self.assertEquals(expected, actual)
 
     def test_genBottomPoints(self):
@@ -96,17 +128,25 @@ class TestBoxMaker(unittest.TestCase):
             (1, -1),
             (4, -1),
             (4, 0),
-            (7, -1),
-            (7, -2),
-            (8, -2),
-            (7, -3),
-            (4, -3),
-            (4, -4),
-            (1, -3),
-            (1, -2),
-            (0, -2),
+            (8, 0),
+            (8, -1),
+            (11, -1),
+            (11, -4),
+            (12, -4),
+            (12, -8),
+            (11, -8),
+            (11, -11),
+            (8, -11),
+            (8, -12),
+            (4, -12),
+            (4, -11),
+            (1, -11),
+            (1, -8),
+            (0, -8),
+            (0, -4),
+            (1, -4),
         ]
-        actual = list(BMLib.genBottomPoints(8, 6, 4, 1, 2))
+        actual = list(BMLib.genBottomPoints(12, 12, 12, 1))
         self.assertEquals(expected, actual)
 
     def test_genTopPoints(self):
@@ -114,15 +154,23 @@ class TestBoxMaker(unittest.TestCase):
             (0, 0),
             (4, 0),
             (4, -1),
+            (8, -1),
             (8, 0),
-            (8, -2),
-            (7, -2),
-            (8, -4),
-            (4, -4),
-            (4, -3),
+            (12, 0),
+            (12, -4),
+            (11, -4),
+            (11, -8),
+            (12, -8),
+            (12, -12),
+            (8, -12),
+            (8, -11),
+            (4, -11),
+            (4, -12),
+            (0, -12),
+            (0, -8),
+            (1, -8),
+            (1, -4),
             (0, -4),
-            (0, -2),
-            (1, -2),
         ]
-        actual = list(BMLib.genTopPoints(8, 6, 4, 1, 2))
+        actual = list(BMLib.genTopPoints(12, 12, 12, 1))
         self.assertEquals(expected, actual)
