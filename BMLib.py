@@ -5,7 +5,7 @@ from itertools import chain
 IDEAL_NOTCH_WIDTH = 4
 
 
-def genFrontPoints(w, h, d, t):
+def genFrontPoints(w, h, d, t, faces):
     return chain(
         genHorizontalLinePoints(0, t, w, -t, t),
         genVerticalLinePoints(w - t, 0, h, t, t),
@@ -13,11 +13,11 @@ def genFrontPoints(w, h, d, t):
         genVerticalLinePoints(t, h, -h, -t, -t),
     )
 
-def genBackPoints(w, h, d, t):
-    return genFrontPoints(w, h, d, t)
+def genBackPoints(w, h, d, t, faces):
+    return genFrontPoints(w, h, d, t, faces)
 
 
-def genLeftPoints(w, h, d, t):
+def genLeftPoints(w, h, d, t, faces):
     return chain(
         genHorizontalLinePoints(0, t, -d, -t, 0),
         genVerticalLinePoints(-d, 0, h, t, t),
@@ -26,15 +26,15 @@ def genLeftPoints(w, h, d, t):
     )
 
 
-def genRightPoints(w, h, d, t):
-    return genLeftPoints(w, h, d, t)
+def genRightPoints(w, h, d, t, faces):
+    return genLeftPoints(w, h, d, t, faces)
 
 
-def genBottomPoints(w, h, d, t):
-    return genTopPoints(w, h, d, t)
+def genBottomPoints(w, h, d, t, faces):
+    return genTopPoints(w, h, d, t, faces)
 
 
-def genTopPoints(w, h, d, t):
+def genTopPoints(w, h, d, t, faces):
     return chain(
         genHorizontalLinePoints(0, 0, w, -t, 0),
         genVerticalLinePoints(w, 0, -d, -t, 0),
