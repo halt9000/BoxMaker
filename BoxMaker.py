@@ -12,6 +12,7 @@ import BMLib
 importlib.reload(BMLib)
 
 from BMLib import (
+    FaceSelection,
     genFrontPoints,
     genBackPoints,
     genLeftPoints,
@@ -19,6 +20,8 @@ from BMLib import (
     genBottomPoints,
     genTopPoints,
 )
+
+
 
 # global set of event handlers to keep them referenced for the duration of the command
 handlers = []
@@ -33,55 +36,61 @@ DEFAULT_DEPTH = '400 mm'
 DEFAULT_THICKNESS = '6 mm'
 
 
-def buildAll(component, w, h, d, thickness):
-    buildFront(component, w, h, d, thickness)
-    buildBack(component, w, h, d, thickness)
-    buildLeft(component, w, h, d, thickness)
-    buildRight(component, w, h, d, thickness)
-    buildBottom(component, w, h, d, thickness)
-    buildTop(component, w, h, d, thickness)
+def buildAll(component, w, h, d, thickness, faces):
+    if faces.front:
+        buildFront(component, w, h, d, thickness, faces)
+    if faces.back:
+        buildBack(component, w, h, d, thickness, faces)
+    if faces.left:
+        buildLeft(component, w, h, d, thickness, faces)
+    if faces.right:
+        buildRight(component, w, h, d, thickness, faces)
+    if faces.bottom:
+        buildBottom(component, w, h, d, thickness, faces)
+    if faces.top:
+        buildTop(component, w, h, d, thickness, faces)
 
 
-def buildFront(component, w, h, d, thickness):
+def buildFront(component, w, h, d, thickness, faces):
     sketch = component.sketches.add(component.xYConstructionPlane)
-    sketchPoints(sketch, genFrontPoints(w, h, d, thickness))
+    sketchPoints(sketch, genFrontPoints(w, h, d, thickness, faces))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Front"
     moveExt(component, e, 'z', d - thickness)
 
 
-def buildBack(component, w, h, d, thickness):
+def buildBack(component, w, h, d, thickness, faces):
     sketch = component.sketches.add(component.xYConstructionPlane)
-    sketchPoints(sketch, genBackPoints(w, h, d, thickness))
+    sketchPoints(sketch, genBackPoints(w, h, d, thickness, faces))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Back"
 
 
-def buildLeft(component, w, h, d, thickness):
+def buildLeft(component, w, h, d, thickness, faces):
     sketch = component.sketches.add(component.yZConstructionPlane)
-    sketchPoints(sketch, genLeftPoints(w, h, d, thickness))
+    sketchPoints(sketch, genLeftPoints(w, h, d, thickness, faces))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Left"
 
 
-def buildRight(component, w, h, d, thickness):
+def buildRight(component, w, h, d, thickness, faces):
     sketch = component.sketches.add(component.yZConstructionPlane)
-    sketchPoints(sketch, genRightPoints(w, h, d, thickness))
+    sketchPoints(sketch, genRightPoints(w, h, d, thickness, faces))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Right"
     moveExt(component, e, 'x', w - thickness)
 
 
-def buildBottom(component, w, h, d, thickness):
+def buildBottom(component, w, h, d, thickness, faces):
     sketch = component.sketches.add(component.xZConstructionPlane)
-    sketchPoints(sketch, genBottomPoints(w, h, d, thickness))
+    sketchPoints(sketch, genBottomPoints(w, h, d, thickness, faces))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Bottom"
 
 
-def buildTop(component, w, h, d, thickness):
+def buildTop(component, w, h, d, thickness, faces):
     sketch = component.sketches.add(component.xZConstructionPlane)
-    sketchPoints(sketch, genTopPoints(w, h, d, thickness))
+    sketchPoints(sketch, genTopPoints(w, h, d, thickness, faces))
     e = extrudeSketch(component, sketch, thickness)
     e.faces[0].body.name = "Top"
     moveExt(component, e, 'y', h - thickness)
@@ -151,7 +160,8 @@ class BoxMakerCommandExecuteHandler(adsk.core.CommandEventHandler):
                 inputs[input.id] = input
 
             # Ensure all inputs were provided
-            requiredInputs = ['widthInput', 'heightInput', 'depthInput', 'thicknessInput']
+            requiredInputs = ['widthInput', 'heightInput', 'depthInput', 'thicknessInput',
+                              'createFrontInput', 'createBackInput', 'createLeftInput', 'createRightInput', 'createBottomInput', 'createTopInput']
             missingInputs = set(requiredInputs) - set(inputs.keys())
             if missingInputs:
                 ui.messageBox("Missing inputs: {}".format(missingInputs))
@@ -166,13 +176,16 @@ class BoxMakerCommandExecuteHandler(adsk.core.CommandEventHandler):
             # Get root component
             component = design.rootComponent
 
+            faces = FaceSelection(inputs['createFrontInput'].value, inputs['createBackInput'].value, inputs['createLeftInput'].value, inputs['createRightInput'].value, inputs['createBottomInput'].value, inputs['createTopInput'].value)
+
             # Built it!
             buildAll(
                 component,
                 unitsMgr.evaluateExpression(inputs['widthInput'].expression, "mm"),
                 unitsMgr.evaluateExpression(inputs['heightInput'].expression, "mm"),
                 unitsMgr.evaluateExpression(inputs['depthInput'].expression, "mm"),
-                unitsMgr.evaluateExpression(inputs['thicknessInput'].expression, "mm")
+                unitsMgr.evaluateExpression(inputs['thicknessInput'].expression, "mm"),
+                faces
             )
 
             args.isValidResult = True
@@ -233,6 +246,64 @@ class BoxMakerCommandCreatedHandler(adsk.core.CommandCreatedEventHandler):
                 'Wall Thickness',
                 'mm',
                 adsk.core.ValueInput.createByString(DEFAULT_THICKNESS)
+            )
+
+            dropdownInput = cmd.commandInputs.addDropDownCommandInput('create_dropdown', 'Dropdown', adsk.core.DropDownStyles.CheckBoxDropDownStyle);
+            dropdownItems = dropdownInput.listItems
+            dropdownItems.add('Item 1', False, 'resources')
+            dropdownItems.add('Item 2', False, 'resources')
+
+            createGroupCmdInput  = cmd.commandInputs.addGroupCommandInput(
+                'createGroup',
+                'Create',
+            )
+
+            createGroupCmdInput.children.addBoolValueInput(
+                'createTopInput',
+                'Top',
+                True,
+                '',
+                True
+            )
+
+            createGroupCmdInput.children.addBoolValueInput(
+                'createBottomInput',
+                'Bottom',
+                True,
+                '',
+                True
+            )
+
+            createGroupCmdInput.children.addBoolValueInput(
+                'createFrontInput',
+                'Front',
+                True,
+                '',
+                True
+            )
+
+            createGroupCmdInput.children.addBoolValueInput(
+                'createBackInput',
+                'Back',
+                True,
+                '',
+                True
+            )
+
+            createGroupCmdInput.children.addBoolValueInput(
+                'createLeftInput',
+                'Left',
+                True,
+                '',
+                True
+            )
+
+            createGroupCmdInput.children.addBoolValueInput(
+                'createRightInput',
+                'Right',
+                True,
+                '',
+                True
             )
 
         except:
