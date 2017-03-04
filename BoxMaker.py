@@ -34,6 +34,7 @@ DEFAULT_WIDTH = '500 mm'
 DEFAULT_HEIGHT = '300 mm'
 DEFAULT_DEPTH = '400 mm'
 DEFAULT_THICKNESS = '6 mm'
+DEFAULT_CLEARANCE = '0 mm'
 
 
 def buildAll(component, w, h, d, thickness, faces):
@@ -248,6 +249,52 @@ class BoxMakerCommandCreatedHandler(adsk.core.CommandCreatedEventHandler):
                 adsk.core.ValueInput.createByString(DEFAULT_THICKNESS)
             )
 
+            clearanceGroupCmdInput  = cmd.commandInputs.addGroupCommandInput(
+                'clearanceGroup',
+                'Clearance',
+            )
+
+            clearanceGroupCmdInput.children.addValueInput(
+                'clearanceTopInput',
+                'Top',
+                'mm',
+                adsk.core.ValueInput.createByString(DEFAULT_CLEARANCE)
+            )
+
+            clearanceGroupCmdInput.children.addValueInput(
+                'clearanceBottomInput',
+                'Bottom',
+                'mm',
+                adsk.core.ValueInput.createByString(DEFAULT_CLEARANCE)
+            )
+
+            clearanceGroupCmdInput.children.addValueInput(
+                'clearanceFrontInput',
+                'Front',
+                'mm',
+                adsk.core.ValueInput.createByString(DEFAULT_CLEARANCE)
+            )
+
+            clearanceGroupCmdInput.children.addValueInput(
+                'clearanceBackInput',
+                'Back',
+                'mm',
+                adsk.core.ValueInput.createByString(DEFAULT_CLEARANCE)
+            )
+
+            clearanceGroupCmdInput.children.addValueInput(
+                'clearanceLeftInput',
+                'Left',
+                'mm',
+                adsk.core.ValueInput.createByString(DEFAULT_CLEARANCE)
+            )
+
+            clearanceGroupCmdInput.children.addValueInput(
+                'clearanceRightInput',
+                'Right',
+                'mm',
+                adsk.core.ValueInput.createByString(DEFAULT_CLEARANCE)
+            )
             createGroupCmdInput  = cmd.commandInputs.addGroupCommandInput(
                 'createGroup',
                 'Create',
