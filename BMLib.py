@@ -1,5 +1,7 @@
 from itertools import chain
+from collections import namedtuple
 
+FaceSelection = namedtuple("FaceSelection", "front back left right bottom top")
 
 #: Multiple of notch height
 IDEAL_NOTCH_WIDTH = 4

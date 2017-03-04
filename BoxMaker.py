@@ -4,7 +4,6 @@ import traceback
 
 import os
 import sys
-from collections import namedtuple
 import importlib
 
 sys.path.append(os.path.dirname(__file__))
@@ -13,6 +12,7 @@ import BMLib
 importlib.reload(BMLib)
 
 from BMLib import (
+    FaceSelection,
     genFrontPoints,
     genBackPoints,
     genLeftPoints,
@@ -21,7 +21,7 @@ from BMLib import (
     genTopPoints,
 )
 
-FaceSelection = namedtuple("FaceSelection", "front back left right bottom top")
+
 
 # global set of event handlers to keep them referenced for the duration of the command
 handlers = []
