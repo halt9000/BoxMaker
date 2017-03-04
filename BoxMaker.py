@@ -248,11 +248,6 @@ class BoxMakerCommandCreatedHandler(adsk.core.CommandCreatedEventHandler):
                 adsk.core.ValueInput.createByString(DEFAULT_THICKNESS)
             )
 
-            dropdownInput = cmd.commandInputs.addDropDownCommandInput('create_dropdown', 'Dropdown', adsk.core.DropDownStyles.CheckBoxDropDownStyle);
-            dropdownItems = dropdownInput.listItems
-            dropdownItems.add('Item 1', False, 'resources')
-            dropdownItems.add('Item 2', False, 'resources')
-
             createGroupCmdInput  = cmd.commandInputs.addGroupCommandInput(
                 'createGroup',
                 'Create',
