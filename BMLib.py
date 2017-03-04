@@ -19,10 +19,10 @@ def genBackPoints(w, h, d, t):
 
 def genLeftPoints(w, h, d, t):
     return chain(
-        genHorizontalLinePoints(0, 0, -d, t, -t),
-        genVerticalLinePoints(-d + t, 0, h, -t, 0),
-        genHorizontalLinePoints(-d, h - t, d, t, t),
-        genVerticalLinePoints(-t, h, -h, t, -t),
+        genHorizontalLinePoints(0, t, -d, -t, 0),
+        genVerticalLinePoints(-d, 0, h, t, t),
+        genHorizontalLinePoints(-d, h - t, d, t, 0),
+        genVerticalLinePoints(0, h, -h, -t, -t),
     )
 
 
