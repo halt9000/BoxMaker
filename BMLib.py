@@ -31,12 +31,7 @@ def genRightPoints(w, h, d, t):
 
 
 def genBottomPoints(w, h, d, t):
-    return chain(
-        genHorizontalLinePoints(0, -t, w, t, t),
-        genVerticalLinePoints(w - t, 0, -d, t, -t),
-        genHorizontalLinePoints(w, -d + t, -w, -t, -t),
-        genVerticalLinePoints(t, -d, d, -t, t),
-    )
+    return genTopPoints(w, h, d, t)
 
 
 def genTopPoints(w, h, d, t):
