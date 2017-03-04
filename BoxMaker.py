@@ -4,7 +4,13 @@ import traceback
 
 import os
 import sys
+import importlib
+
 sys.path.append(os.path.dirname(__file__))
+
+import BMLib
+importlib.reload(BMLib)
+
 from BMLib import (
     genFrontPoints,
     genBackPoints,
