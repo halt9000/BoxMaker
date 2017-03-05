@@ -73,7 +73,7 @@ def genLeftRightPoints(w, h, d, t, faces, clearance):
     return chain(l1, l2, l3, l4)
 
 
-def genLefttPoints(w, h, d, t, faces, clearances):
+def genLeftPoints(w, h, d, t, faces, clearances):
     return genLeftRightPoints(w, h, d, t, faces, clearances.left)
 
 
